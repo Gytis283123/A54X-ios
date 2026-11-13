@@ -1,8 +1,9 @@
 # iOS port target: Samsung Galaxy A54 5G (SM-A546B)
 
 This is the initial hardware record for a future `a54x` port, based on the
-existing `ios-sweet` XNU bring-up. It is a planning record, not evidence that
-the sweet boot image or drivers work on Samsung hardware.
+existing `ios-sweet` XNU bring-up. The requested kernel target is iOS 26.2's
+Darwin 25.2 generation. The current code adds an experimental XNU build
+configuration; it does not yet boot on Samsung hardware.
 
 ## Confirmed target identity
 
@@ -18,7 +19,15 @@ the sweet boot image or drivers work on Samsung hardware.
 
 ## Bring-up status
 
-- No A546B boot image has been built or booted from this workspace.
+- Added `xnu/patches-a54x/0001-a54x-arm64-machine-config.patch` against the
+  pinned XNU `xnu-12377.61.12` source tag and a manual workflow
+  `.github/workflows/xnu-a54x.yml` for a macOS 26.2 ARM64 DEVELOPMENT build.
+- The initial build configuration targets plain `arm64` and `-march=armv8.2-a`
+  for the A78/A55 clusters. BTI stays disabled until its support is confirmed
+  from the device's feature registers. It also avoids linking an Apple KDK
+  support archive for the custom A54X machine config.
+- The workflow has not been run. No A546B kernel artifact or boot image has
+  been built or booted from this workspace.
 - No A546B stock DTB, live device tree, boot/recovery image, partition map, or
   serial log is present in the port repository.
 - The sweet shim is Qualcomm/ABL-specific. Its address map, display handoff,
@@ -27,6 +36,16 @@ the sweet boot image or drivers work on Samsung hardware.
 - The A54 device tree and kernel source are useful leads, but Android device
   configuration alone does not establish the secure-boot or bootloader path
   required to enter a custom XNU shim.
+- A kernel build is only the first milestone. A Samsung-compatible RAM boot
+  path, XNU entry/boot-args support, Exynos timer/GIC/PSCI bring-up, memory map,
+  console, storage, and iOS 26.2 userland integration are still required.
+
+## Kernel version target
+
+- macOS 26.2's Darwin kernel version is `25.2.0`; the selected XNU source tag
+  is `xnu-12377.61.12` ([Apple XNU source](https://github.com/apple-oss-distributions/xnu/tree/xnu-12377.61.12)).
+- The iOS 16 XNU 8796 patch series used by `sweet` is not the A546B/iOS 26.2
+  source base. The A54 workflow intentionally uses its own patch directory.
 
 ## Next port milestone: read-only inventory
 

@@ -1,0 +1,3 @@
+# Unified diff context uses a leading marker space that appears as trailing
+# whitespace when Git checks the patch artifact itself.
+xnu/patches-a54x/*.patch whitespace=-trailing-space

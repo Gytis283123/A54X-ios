@@ -1,5 +1,28 @@
 # iOS 16 on sweet (Redmi Note 10 Pro, SM7150) - working notes
 
+## Agent handoff / active work (2026-11-13: A54X DARWIN 25.2 BUILD TARGET)
+
+- [OBSERVATION] User wants an XNU port for Samsung Galaxy A54 5G SM-A546B to
+  eventually test an incomplete iOS 26.2 system. The existing XNU 8796 / iOS
+  16 sweet track is not the right kernel generation.
+- [ACTION] Added an isolated A54X machine-config patch for Apple XNU
+  `xnu-12377.61.12` (Darwin 25.2.0) and manual workflow
+  `.github/workflows/xnu-a54x.yml` using `darwin-xnu-build` pinned at
+  `663906528d1cd5ea8fde7de6f16de73db9511549`.
+- [DETAIL] Initial target is `DEVELOPMENT ARM64 A54X`; the config selects plain
+  arm64 and `-march=armv8.2-a`, with BTI disabled until device feature
+  registers confirm support, and avoids a nonexistent Apple KDK archive for
+  the custom A54X machine. This is only a compiler/platform baseline.
+- [VERIFICATION] Patch applies to the exact `xnu-12377.61.12` tag. No XNU
+  compile, GitHub Actions build, payload packaging, or A546B boot has yet run.
+- [BLOCKERS] No A546B DTB, stock boot metadata, live hardware inventory, or
+  A546B connected over fastboot is available in this workspace. Kernel target
+  does not yet have Exynos timer/GIC/PSCI, memory, console, storage or Samsung
+  boot support, nor an iOS 26.2 userland image.
+- [NEXT] Push a feature branch and dispatch `XNU 26.2 A54X bring-up` to surface
+  compile failures; separately obtain A546B read-only hardware/boot-chain
+  inventory. Do not flash or repartition.
+
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 
 - [OBSERVATION] Started a third-device port record at `docs/ports/SM-A546B.md`.
