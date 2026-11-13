@@ -19,9 +19,13 @@
   A546B connected over fastboot is available in this workspace. Kernel target
   does not yet have Exynos timer/GIC/PSCI, memory, console, storage or Samsung
   boot support, nor an iOS 26.2 userland image.
-- [NEXT] Push a feature branch and dispatch `XNU 26.2 A54X bring-up` to surface
-  compile failures; separately obtain A546B read-only hardware/boot-chain
-  inventory. Do not flash or repartition.
+- [BLOCKER] Pushing `codex/a54x-xnu-26.2` to configured `origin`
+  (`dipa-studio/ios-sweet`) returned HTTP 403, permission denied to the
+  authenticated account. The branch remains local; no GitHub Actions run ID or
+  compile result exists.
+- [NEXT] Use a remote where the authenticated account has write access to run
+  `XNU 26.2 A54X bring-up`; separately obtain A546B read-only hardware and
+  boot-chain inventory. Do not flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 
