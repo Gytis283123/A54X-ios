@@ -1,5 +1,24 @@
 # iOS 16 on sweet (Redmi Note 10 Pro, SM7150) - working notes
 
+## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
+
+- [OBSERVATION] Started a third-device port record at `docs/ports/SM-A546B.md`.
+  It records externally documented identity/hardware facts and separates them
+  from unverified boot-path and board details.
+- [OBSERVATION] A546B is identified as Galaxy A54 5G / `a54x`, Exynos 1380
+  (`S5E8835`), with 4 Cortex-A78 + 4 Cortex-A55 CPU cores. See the linked
+  device-tree sources in the port record.
+- [UNFINISHED] No A546B device dumps, stock images, live DTB, bootloader access
+  evidence, or logs are present here. Do not adapt sweet memory addresses,
+  bootloader handoff, or device drivers by assumption.
+- [NEXT] Obtain a read-only A546B inventory (exact variant/firmware, stock
+  DTB, CPU/PSCI/GIC/timer/memory/display/storage facts, unlock and RAM-only
+  boot capabilities), then build a separate board profile and shim path. Do
+  not flash or repartition during inventory.
+- [OBSERVATION] On 2026-11-13, `fastboot devices` returned no devices; no
+  `0080` image was found under the checked `repo/shim` tree. The sweet
+  device-side next step could not be run in this session.
+
 ## Agent handoff / active work (2026-10-15, latest)
 
 ### >>> UPDATE 2026-10-18 (read first, then the 10-17 handoff below) <<<

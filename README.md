@@ -45,6 +45,13 @@ ABL (stock Xiaomi bootloader, unlocked)
               -> dyld + shared cache -> launchd -> daemons -> backboardd + SpringBoard
 ```
 
+## Device port work
+
+The next hardware target is the Samsung Galaxy A54 5G (`SM-A546B`, `a54x`).
+Its initial hardware record and read-only bring-up checklist are in
+[docs/ports/SM-A546B.md](docs/ports/SM-A546B.md). No A54-specific boot image
+or device boot is available yet.
+
 There is no serial port (the debug UART is wired as SPI on this board). The kernel draws its console into the framebuffer that ABL leaves at `0x9c000000`, and keeps a persistent 4 MiB log ring at the end of `userdata`. You read that log from OrangeFox recovery with `tools/sweet-log-pull.sh`, so you don't have to film the screen.
 
 ## How to do it yourself
