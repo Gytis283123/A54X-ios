@@ -27,10 +27,18 @@
   boot support, nor an iOS 26.2 userland image.
 - [OBSERVATION] Repo `Gytis283123/A54X-ios` is writable and contains commit
   `4fd14c8` on `main`; the first run above confirms Actions are available.
-- [NEXT] Push the MAKEFLAGS fix and rerun with `keep_going=false` to obtain the
-  first actionable compiler error. Then fix and repeat until a kernel artifact
-  is produced. Separately obtain A546B read-only hardware and boot-chain
-  inventory. Do not flash or repartition.
+- [VERIFICATION] Rerun #2 (`43575498658`, commit `4da66ae`) failed in XNU
+  compilation after 9m52s; setup and patch preparation passed, and no kernel
+  artifact was produced. Fail-fast reduced the log to 458,853,797 bytes. The
+  first source diagnostic is `bsd/kern/sys_generic.c:2969,2971`: `MAX_CPUS`
+  undeclared. This custom machine config is missing its board config block.
+- [ACTION] Added `ARM64_BOARD_CONFIG_A54X` board constants to the A54X patch:
+  eight CPUs, two clusters, and `MAX_L2_CLINE=7`, matching the neighboring
+  ARM64 board-config conventions. Needs next CI compile to verify.
+- [NEXT] Push the board-config fix and run with `keep_going=false`; resolve the
+  next compiler/link error iteratively until a kernel artifact is produced.
+  Separately obtain A546B read-only hardware and boot-chain inventory. Do not
+  flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 

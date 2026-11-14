@@ -70,6 +70,24 @@ index 5af455b..9a9f2a5 100644
          LDFLAGS_KERNEL_ONLY += -rdynamic -Wl,-force_load,$(KDKROOT)/System/Library/KernelSupport/lib$(CURRENT_MACHINE_CONFIG).os.$(CURRENT_KERNEL_CONFIG).a
  endif
  
+diff --git a/pexpert/pexpert/arm64/board_config.h b/pexpert/pexpert/arm64/board_config.h
+index 27665b7..bf4a9c2 100644
+--- a/pexpert/pexpert/arm64/board_config.h
++++ b/pexpert/pexpert/arm64/board_config.h
+@@ -301,6 +301,14 @@
+ 
+ 
+ 
++#ifdef ARM64_BOARD_CONFIG_A54X
++#define MAX_L2_CLINE                   7
++#define MAX_CPUS                       8
++#define MAX_CPU_CLUSTERS               2
++#endif  /* ARM64_BOARD_CONFIG_A54X */
++
++
+ #ifdef ARM64_BOARD_CONFIG_VMAPPLE
+ #include <pexpert/arm64/VMAPPLE.h>
+ 
 diff --git a/osfmk/arm64/proc_reg.h b/osfmk/arm64/proc_reg.h
 index 049e55a..beff174 100644
 --- a/osfmk/arm64/proc_reg.h
