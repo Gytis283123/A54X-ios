@@ -74,7 +74,7 @@ diff --git a/pexpert/pexpert/arm64/board_config.h b/pexpert/pexpert/arm64/board_
 index 27665b7..bf4a9c2 100644
 --- a/pexpert/pexpert/arm64/board_config.h
 +++ b/pexpert/pexpert/arm64/board_config.h
-@@ -301,6 +301,14 @@
+@@ -301,6 +301,13 @@
  
  
  

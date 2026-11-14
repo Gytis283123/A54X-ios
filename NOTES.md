@@ -34,9 +34,15 @@
   undeclared. This custom machine config is missing its board config block.
 - [ACTION] Added `ARM64_BOARD_CONFIG_A54X` board constants to the A54X patch:
   eight CPUs, two clusters, and `MAX_L2_CLINE=7`, matching the neighboring
-  ARM64 board-config conventions. Needs next CI compile to verify.
-- [NEXT] Push the board-config fix and run with `keep_going=false`; resolve the
-  next compiler/link error iteratively until a kernel artifact is produced.
+  ARM64 board-config conventions.
+- [VERIFICATION] Rerun #3 (`43576947099`, commit `d645c81`) stopped after
+  5m49s in build setup. XNU patch preparation reported the A54X patch malformed
+  at line 91 because the new board-config hunk declared the wrong added-line
+  count. No kernel compile or artifact resulted.
+- [ACTION] Corrected the board-config hunk length; `git apply --stat` parses the
+  complete patch cleanly. It still needs a CI run against the pinned source.
+- [NEXT] Push the corrected patch and rerun with `keep_going=false`; resolve
+  the next compiler/link error iteratively until a kernel artifact is produced.
   Separately obtain A546B read-only hardware and boot-chain inventory. Do not
   flash or repartition.
 
