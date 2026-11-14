@@ -58,10 +58,13 @@
   isolated. No kernel artifact was produced.
 - [ACTION] Updated CI to build with one worker, capture build output to a file,
   and print compiler/make diagnostics plus the final 80 lines on failure.
-- [NEXT] Push this diagnostic change and rerun with `keep_going=false`; capture
-  and fix the next compiler/link error, iterating toward a kernel artifact.
-  Separately obtain A546B read-only hardware and boot-chain inventory. Do not
-  flash or repartition.
+- [VERIFICATION] Rerun #7 (`43581105802`, commit `9f4bc77`) was canceled by
+  `@Gytis283123` after 4m06s. It did not complete compilation and produced no
+  kernel artifact or conclusive build result.
+- [NEXT] Resume the A54X XNU build only when requested. The next CI run should
+  retain the single-worker captured-output change and inspect compiler/make
+  diagnostics. Separately obtain A546B read-only hardware and boot-chain
+  inventory. Do not flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 
