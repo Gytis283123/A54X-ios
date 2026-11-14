@@ -52,13 +52,16 @@
   collected log remains hundreds of MB and its concurrent verbose compiler
   output is interleaved; no reliable new source diagnostic has been isolated.
   No kernel artifact was produced.
-- [ACTION] Changed the pinned builder invocation in the workflow to disable
-  verbose command echoing and use concise output, so the next CI log should
-  preserve compiler diagnostics without the hundreds-of-MB command stream.
-- [NEXT] Push this log readability change and rerun with `keep_going=false`;
-  capture and fix the next compiler/link error, iterating toward a kernel
-  artifact. Separately obtain A546B read-only hardware and boot-chain
-  inventory. Do not flash or repartition.
+- [VERIFICATION] Rerun #6 (`43579774923`, commit `2f028cd`) failed after
+  10m10s. Command echo was disabled, but the concurrent compiler output was
+  still heavily interleaved and no reliable new source diagnostic could be
+  isolated. No kernel artifact was produced.
+- [ACTION] Updated CI to build with one worker, capture build output to a file,
+  and print compiler/make diagnostics plus the final 80 lines on failure.
+- [NEXT] Push this diagnostic change and rerun with `keep_going=false`; capture
+  and fix the next compiler/link error, iterating toward a kernel artifact.
+  Separately obtain A546B read-only hardware and boot-chain inventory. Do not
+  flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 

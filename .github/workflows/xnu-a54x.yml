@@ -43,8 +43,11 @@ jobs:
           sed -i '' 's/ARCHS="x86_64 arm64e" VALID_ARCHS="x86_64 arm64e"/ARCHS="x86_64 arm64e arm64" VALID_ARCHS="x86_64 arm64e arm64"/' dxb/build.sh
           # Keep concurrent compiler diagnostics readable in the Actions log.
           sed -i '' 's/VERBOSE=YES/VERBOSE=NO/g; s/CONCISE=0/CONCISE=1/g' dxb/build.sh
+          # Keep compiler output deterministic and avoid interleaved diagnostics.
+          sed -i '' 's/make install -j8 /make install -j1 /g' dxb/build.sh
           grep -c 'VALID_ARCHS="x86_64 arm64e arm64"' dxb/build.sh
           grep -c 'VERBOSE=NO' dxb/build.sh
+          grep -c 'make install -j1' dxb/build.sh
           ls dxb/patches/26.0
 
       - name: Install build dependencies
@@ -64,7 +67,21 @@ jobs:
         working-directory: dxb
         env:
           MAKEFLAGS: ${{ inputs.keep_going && '-k' || '' }}
-        run: bash build.sh
+        run: |
+          set +e
+          bash build.sh > build.log 2>&1
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "Build failed; compiler and make diagnostics:"
+            grep -nE 'error:|fatal error:|undefined reference|undefined symbol|ld:|make\[[0-9]+\]: \*\*\*|Error [0-9]+' build.log | tail -n 120 || true
+            echo "Last build output lines:"
+            tail -n 80 build.log
+          else
+            echo "Build succeeded."
+            tail -n 30 build.log
+          fi
+          exit "$status"
 
       - name: Collect kernel artifact
         if: always()
