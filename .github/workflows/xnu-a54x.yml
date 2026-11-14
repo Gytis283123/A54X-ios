@@ -60,7 +60,7 @@ jobs:
       - name: Build XNU 26.2 A54X
         working-directory: dxb
         env:
-          MAKEFLAGS: ${{ inputs.keep_going == false && '' || '-k' }}
+          MAKEFLAGS: ${{ inputs.keep_going && '-k' || '' }}
         run: bash build.sh
 
       - name: Collect kernel artifact

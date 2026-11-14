@@ -1,6 +1,6 @@
 # iOS 16 on sweet (Redmi Note 10 Pro, SM7150) - working notes
 
-## Agent handoff / active work (2026-11-13: A54X DARWIN 25.2 BUILD TARGET)
+## Agent handoff / active work (2026-11-14: A54X DARWIN 25.2 BUILD TARGET)
 
 - [OBSERVATION] User wants an XNU port for Samsung Galaxy A54 5G SM-A546B to
   eventually test an incomplete iOS 26.2 system. The existing XNU 8796 / iOS
@@ -13,19 +13,24 @@
   arm64 and `-march=armv8.2-a`, with BTI disabled until device feature
   registers confirm support, and avoids a nonexistent Apple KDK archive for
   the custom A54X machine. This is only a compiler/platform baseline.
-- [VERIFICATION] Patch applies to the exact `xnu-12377.61.12` tag. No XNU
-  compile, GitHub Actions build, payload packaging, or A546B boot has yet run.
+- [VERIFICATION] Patch applies to the exact `xnu-12377.61.12` tag. First GitHub
+  Actions run #1 (`43507324830`, commit `4fd14c8`) completed 2026-11-13 with
+  failure in `Build XNU 26.2 A54X` after 14m09s (job: `132168297861`). Setup,
+  patch preparation, dependency installation and artifact upload succeeded.
+  The collected artifact was empty (136-byte zip); no kernel was produced.
+  The build used `MAKEFLAGS=-k` unexpectedly because of the workflow's false
+  input expression, producing extremely verbose cascading errors. Workflow is
+  corrected so `keep_going=false` yields empty MAKEFLAGS; this needs a rerun.
 - [BLOCKERS] No A546B DTB, stock boot metadata, live hardware inventory, or
   A546B connected over fastboot is available in this workspace. Kernel target
   does not yet have Exynos timer/GIC/PSCI, memory, console, storage or Samsung
   boot support, nor an iOS 26.2 userland image.
-- [BLOCKER] Pushing `codex/a54x-xnu-26.2` to configured `origin`
-  (`dipa-studio/ios-sweet`) returned HTTP 403, permission denied to the
-  authenticated account. The branch remains local; no GitHub Actions run ID or
-  compile result exists.
-- [NEXT] Use a remote where the authenticated account has write access to run
-  `XNU 26.2 A54X bring-up`; separately obtain A546B read-only hardware and
-  boot-chain inventory. Do not flash or repartition.
+- [OBSERVATION] Repo `Gytis283123/A54X-ios` is writable and contains commit
+  `4fd14c8` on `main`; the first run above confirms Actions are available.
+- [NEXT] Push the MAKEFLAGS fix and rerun with `keep_going=false` to obtain the
+  first actionable compiler error. Then fix and repeat until a kernel artifact
+  is produced. Separately obtain A546B read-only hardware and boot-chain
+  inventory. Do not flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 
