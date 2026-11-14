@@ -81,7 +81,14 @@
 - [ACTION] Added the ARM architecture version define, Apple MPIDR register
   constants, and explicit no-Apple-monitor/no-Apple-E-core settings to the
   A54X board profile. Needs fail-fast CI verification.
-- [NEXT] Push these board-profile fixes and run CI with `keep_going=false`.
+- [VERIFICATION] Run #10 (`43584762805`, commit `782285f`) failed after 5m54s
+  at preprocessing: `board_config.h:306` could not find the MPIDR header because
+  the include path in our patch duplicated the source directory prefix. No
+  kernel artifact was produced; architecture and monitor fixes remain
+  unverified.
+- [ACTION] Corrected the include to the exported XNU path
+  `<pexpert/arm64/apple_arm64_regs.h>`.
+- [NEXT] Push the include-path correction and run CI with `keep_going=false`.
   Separately obtain A546B read-only hardware and boot-chain inventory. Do not
   flash or repartition.
 
