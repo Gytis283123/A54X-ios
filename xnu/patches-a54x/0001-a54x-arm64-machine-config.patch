@@ -30,7 +30,7 @@ index 5af455b..9a9f2a5 100644
  MACHINE_FLAGS_ARM64_T8142 = -DARM64_BOARD_CONFIG_T8142 			-mcpu=apple-m4+memtag+predres2 -D__ARM_ARCH_8_2__=1
  
  MACHINE_FLAGS_ARM64_VMAPPLE = -DARM64_BOARD_CONFIG_VMAPPLE              -march=armv8.5a+sme2 -D__ARM_ARCH_8_2__=1
-+MACHINE_FLAGS_ARM64_A54X = -DARM64_BOARD_CONFIG_A54X                    -march=armv8.2-a -D__ARM_ARCH_8_2__=1
++MACHINE_FLAGS_ARM64_A54X = -DARM64_BOARD_CONFIG_A54X                    -march=armv8.2-a -D__ARM_ARCH_8_2__=1 -D__ARM_ARCH__=8
  
  
  #
@@ -74,11 +74,14 @@ diff --git a/pexpert/pexpert/arm64/board_config.h b/pexpert/pexpert/arm64/board_
 index 27665b7..bf4a9c2 100644
 --- a/pexpert/pexpert/arm64/board_config.h
 +++ b/pexpert/pexpert/arm64/board_config.h
-@@ -301,6 +301,14 @@
+@@ -301,6 +301,17 @@
  
  
  
 +#ifdef ARM64_BOARD_CONFIG_A54X
++#include <pexpert/pexpert/arm64/apple_arm64_regs.h>
++#define NO_MONITOR                    1 /* No Apple monitor ABI for this platform. */
++#define NO_ECORE                      1 /* No Apple ACC E-core classification on Exynos. */
 +#define MAX_L2_CLINE                   7
 +#define MAX_CPUS                       8
 +#define MAX_CPU_CLUSTERS               2

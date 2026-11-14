@@ -72,8 +72,16 @@
 - [ACTION] Changed `keep_going` default to false and narrowed the linker error
   pattern to actual linker diagnostics. The next manually dispatched run will
   stop at the first error and show a useful summary by default.
-- [NEXT] Do not start another run until asked. When resumed, use the existing
-  single-worker/captured-output workflow and inspect the corrected diagnostics.
+- [VERIFICATION] Run #9 (`43583035917`, commit `75c0fb5`) was active for
+  17m26s, then failed in XNU compile. The log filter now exposed these errors:
+  `MONITOR undefined` at `osfmk/arm64/cpu.c:1205`; `Unsupported arch` in
+  `osfmk/arm/cpuid.c:99` and `machine_routines_common.c:1384`; and missing
+  `MPIDR_CORETYPE_*` definitions used by `apple_arm64_cpu.h`. The run had
+  `MAKEFLAGS=-k` (keep_going enabled); no kernel artifact was produced.
+- [ACTION] Added the ARM architecture version define, Apple MPIDR register
+  constants, and explicit no-Apple-monitor/no-Apple-E-core settings to the
+  A54X board profile. Needs fail-fast CI verification.
+- [NEXT] Push these board-profile fixes and run CI with `keep_going=false`.
   Separately obtain A546B read-only hardware and boot-chain inventory. Do not
   flash or repartition.
 
