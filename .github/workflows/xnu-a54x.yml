@@ -68,10 +68,23 @@ jobs:
         env:
           MAKEFLAGS: ${{ inputs.keep_going && '-k' || '' }}
         run: |
+          (
+            while [ ! -f .build-done ]; do
+              sleep 60
+              if [ ! -f .build-done ]; then
+                log_bytes=$(wc -c < build.log | tr -d ' ')
+                echo "XNU build is still running; captured log is ${log_bytes} bytes."
+              fi
+            done
+          ) &
+          ticker_pid=$!
           set +e
           bash build.sh > build.log 2>&1
           status=$?
           set -e
+          touch .build-done
+          kill "$ticker_pid" 2>/dev/null || true
+          wait "$ticker_pid" 2>/dev/null || true
           if [ "$status" -ne 0 ]; then
             echo "Build failed; compiler and make diagnostics:"
             grep -niE 'error:|fatal error:|undefined reference|undefined symbol|undefined symbols|symbol.*not found|library not found|(^|[[:space:]])ld: (error|fatal error):|make\[[0-9]+\]: \*\*\*|Error [0-9]+' build.log | tail -n 120 || true

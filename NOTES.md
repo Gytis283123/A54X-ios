@@ -88,7 +88,18 @@
   unverified.
 - [ACTION] Corrected the include to the exported XNU path
   `<pexpert/arm64/apple_arm64_regs.h>`.
-- [NEXT] Push the include-path correction and run CI with `keep_going=false`.
+- [VERIFICATION] Run #11 (`43585308879`, commit `fa5c755`) passed preprocessing
+  and compilation, then failed at final link after 18m47s. The linker reports
+  unresolved board/architecture services including `pmap_*`, `set_mmu_ttb`,
+  `start_cpu`, `resume_idle_cpu`, and physical-memory bounds. The target
+  intentionally omits the nonexistent `libA54X` KDK archive, which normally
+  supplies Apple board-specific implementations. The 136-byte artifact has no
+  kernel. This is the first complete compile through to link, not a bootable
+  result.
+- [ACTION] Added a 60-second workflow heartbeat with captured log size so the
+  build step no longer appears silent while `build.sh` runs.
+- [NEXT] Implement or identify compatible A54X pmap and low-level ARM64
+  implementations for the unresolved symbols before spending another CI run.
   Separately obtain A546B read-only hardware and boot-chain inventory. Do not
   flash or repartition.
 
