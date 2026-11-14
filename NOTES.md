@@ -41,7 +41,13 @@
   count. No kernel compile or artifact resulted.
 - [ACTION] Corrected the board-config hunk length; `git apply --stat` parses the
   complete patch cleanly. It still needs a CI run against the pinned source.
-- [NEXT] Push the corrected patch and rerun with `keep_going=false`; resolve
+- [VERIFICATION] Rerun #4 (`43577630196`, commit `9f29f82`) applied the patch
+  and compiled into BSD/OSFMK, then failed after 10m34s at
+  `osfmk/arm64/machine_kpc.h:37`: `CORE_NCTRS` was undefined. No kernel artifact
+  was produced.
+- [ACTION] Added `CORE_NCTRS=2`, which exposes only the two architectural fixed
+  counters until the Exynos PMU's configurable counter count is verified.
+- [NEXT] Push this config addition and rerun with `keep_going=false`; resolve
   the next compiler/link error iteratively until a kernel artifact is produced.
   Separately obtain A546B read-only hardware and boot-chain inventory. Do not
   flash or repartition.

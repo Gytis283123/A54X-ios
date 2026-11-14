@@ -74,7 +74,7 @@ diff --git a/pexpert/pexpert/arm64/board_config.h b/pexpert/pexpert/arm64/board_
 index 27665b7..bf4a9c2 100644
 --- a/pexpert/pexpert/arm64/board_config.h
 +++ b/pexpert/pexpert/arm64/board_config.h
-@@ -301,6 +301,13 @@
+@@ -301,6 +301,14 @@
  
  
  
@@ -82,6 +82,7 @@ index 27665b7..bf4a9c2 100644
 +#define MAX_L2_CLINE                   7
 +#define MAX_CPUS                       8
 +#define MAX_CPU_CLUSTERS               2
++#define CORE_NCTRS                     2 /* Fixed counters only until Exynos PMU support is verified. */
 +#endif  /* ARM64_BOARD_CONFIG_A54X */
 +
 +
