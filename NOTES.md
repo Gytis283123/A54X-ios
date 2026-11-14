@@ -47,10 +47,18 @@
   was produced.
 - [ACTION] Added `CORE_NCTRS=2`, which exposes only the two architectural fixed
   counters until the Exynos PMU's configurable counter count is verified.
-- [NEXT] Push this config addition and rerun with `keep_going=false`; resolve
-  the next compiler/link error iteratively until a kernel artifact is produced.
-  Separately obtain A546B read-only hardware and boot-chain inventory. Do not
-  flash or repartition.
+- [VERIFICATION] Rerun #5 (`43578658420`, commit `cbee388`) passed the previous
+  compile failure and continued longer, but failed the build after 8m54s. The
+  collected log remains hundreds of MB and its concurrent verbose compiler
+  output is interleaved; no reliable new source diagnostic has been isolated.
+  No kernel artifact was produced.
+- [ACTION] Changed the pinned builder invocation in the workflow to disable
+  verbose command echoing and use concise output, so the next CI log should
+  preserve compiler diagnostics without the hundreds-of-MB command stream.
+- [NEXT] Push this log readability change and rerun with `keep_going=false`;
+  capture and fix the next compiler/link error, iterating toward a kernel
+  artifact. Separately obtain A546B read-only hardware and boot-chain
+  inventory. Do not flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 

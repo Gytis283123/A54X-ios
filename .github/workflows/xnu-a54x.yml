@@ -41,7 +41,10 @@ jobs:
           cp xnu/patches-a54x/*.patch dxb/patches/26.0/
           # libfirehose_kernel is otherwise built without the plain arm64 slice.
           sed -i '' 's/ARCHS="x86_64 arm64e" VALID_ARCHS="x86_64 arm64e"/ARCHS="x86_64 arm64e arm64" VALID_ARCHS="x86_64 arm64e arm64"/' dxb/build.sh
+          # Keep concurrent compiler diagnostics readable in the Actions log.
+          sed -i '' 's/VERBOSE=YES/VERBOSE=NO/g; s/CONCISE=0/CONCISE=1/g' dxb/build.sh
           grep -c 'VALID_ARCHS="x86_64 arm64e arm64"' dxb/build.sh
+          grep -c 'VERBOSE=NO' dxb/build.sh
           ls dxb/patches/26.0
 
       - name: Install build dependencies
