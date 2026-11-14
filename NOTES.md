@@ -61,10 +61,21 @@
 - [VERIFICATION] Rerun #7 (`43581105802`, commit `9f4bc77`) was canceled by
   `@Gytis283123` after 4m06s. It did not complete compilation and produced no
   kernel artifact or conclusive build result.
-- [NEXT] Resume the A54X XNU build only when requested. The next CI run should
-  retain the single-worker captured-output change and inspect compiler/make
-  diagnostics. Separately obtain A546B read-only hardware and boot-chain
-  inventory. Do not flash or repartition.
+- [VERIFICATION] Run #8 (`43581425129`, commit `9f4bc77`) failed in XNU compile
+  after 13m20s. Setup and patch preparation passed. Artifact
+  `xnu-kernel-a54x-26.2` is only 136 bytes; no kernel was produced. The run used
+  `MAKEFLAGS=-k` because the manual input default was `keep_going=true`. The
+  failure summary filter also matched `ld:` inside the frequent phrase
+  `lock not held`, so its last-120 output was warnings and make cascades rather
+  than the compiler root error. The full build log was not preserved as an
+  artifact, so this run's first actionable compiler error cannot be recovered.
+- [ACTION] Changed `keep_going` default to false and narrowed the linker error
+  pattern to actual linker diagnostics. The next manually dispatched run will
+  stop at the first error and show a useful summary by default.
+- [NEXT] Do not start another run until asked. When resumed, use the existing
+  single-worker/captured-output workflow and inspect the corrected diagnostics.
+  Separately obtain A546B read-only hardware and boot-chain inventory. Do not
+  flash or repartition.
 
 ## Agent handoff / active work (2026-11-13: A546B PORT STARTED)
 

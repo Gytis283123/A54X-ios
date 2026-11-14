@@ -11,7 +11,7 @@ on:
       keep_going:
         description: Collect compile errors across files
         type: boolean
-        default: true
+        default: false
 
 concurrency:
   group: xnu-a54x-${{ github.ref }}
@@ -74,7 +74,7 @@ jobs:
           set -e
           if [ "$status" -ne 0 ]; then
             echo "Build failed; compiler and make diagnostics:"
-            grep -nE 'error:|fatal error:|undefined reference|undefined symbol|ld:|make\[[0-9]+\]: \*\*\*|Error [0-9]+' build.log | tail -n 120 || true
+            grep -niE 'error:|fatal error:|undefined reference|undefined symbol|undefined symbols|symbol.*not found|library not found|(^|[[:space:]])ld: (error|fatal error):|make\[[0-9]+\]: \*\*\*|Error [0-9]+' build.log | tail -n 120 || true
             echo "Last build output lines:"
             tail -n 80 build.log
           else
